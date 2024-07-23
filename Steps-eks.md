@@ -93,6 +93,10 @@ eksctl create nodegroup --cluster=my-eks22 \
 * Create Servcie account/ROLE/BIND-ROLE/Token
 
 ## Create Service Account, Role & Assign that role, And create a secret for Service Account and geenrate a Token
+first we need to create namespace
+```
+kubectl create ns webapps
+```
 
 ### Creating Service Account
 
@@ -171,3 +175,16 @@ subjects:
 ### Generate token using service account in the namespace
 
 [Create Token](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#:~:text=To%20create%20a%20non%2Dexpiring,with%20that%20generated%20token%20data.)
+```yaml
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: mysecretname
+  annotations:
+    kubernetes.io/service-account.name: jenkins
+```
+```
+kubectl describe secret mysecretname -n webapps
+```
+You will get token here
